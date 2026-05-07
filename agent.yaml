@@ -20,8 +20,8 @@
 # Production env vars:
 #   AGENT_NAME -- override the agent name per deployment
 agent:
-  name: ${AGENT_NAME:-my-agent}
-  description: "A brief description of what this agent does"
+  name: ${AGENT_NAME:-fbi-crime-analyst}
+  description: "FBI UCR crime data analyst — forecasts and historical analysis via MCP tools"
   version: 0.1.0
 
 # -- LLM provider and generation settings ------------------------------------
@@ -46,9 +46,11 @@ agent:
 #                      endpoints; set to any non-empty string (e.g. "not-required")
 model:
   provider: ${MODEL_PROVIDER:-openai}
-  endpoint: ${MODEL_ENDPOINT:-http://llamastack:8321/v1}
-  name: ${MODEL_NAME:-meta-llama/Llama-3.3-70B-Instruct}
-  temperature: 0.7
+  # Default points at gpt-oss-20b deployed by ../fbi-ucr-demo into the
+  # gpt-oss-model namespace. Override MODEL_ENDPOINT for local dev.
+  endpoint: ${MODEL_ENDPOINT:-http://gpt-oss-20b.gpt-oss-model.svc.cluster.local:80/v1}
+  name: ${MODEL_NAME:-RedHatAI/gpt-oss-20b}
+  temperature: 0.3
   max_tokens: 4096
 
 # -- Platform mode (optional, OGX / LlamaStack delegation) -------------------
@@ -99,9 +101,12 @@ platform:
 # Production env vars (example):
 #   MCP_SEARCH_URL  -- URL for a web-search MCP server
 #
-# mcp_servers:
-#   - url: ${MCP_SEARCH_URL:-http://search-mcp:8080/mcp}
-mcp_servers: []
+# Default points at the FBI Crime Stats MCP server deployed by
+# ../fbi-ucr-demo into the fbi-mcp namespace. Override MCP_FBI_URL for
+# local dev (e.g. http://localhost:8080/mcp/ when running the MCP server
+# locally with `make run-server`).
+mcp_servers:
+  - url: ${MCP_FBI_URL:-http://fbi-crime-stats-mcp.fbi-mcp.svc.cluster.local:8080/mcp/}
 
 # -- Local tools ---------------------------------------------------------------
 #

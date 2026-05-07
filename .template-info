@@ -1,0 +1,17 @@
+{
+  "generator": {
+    "tool": "fips-agents-cli",
+    "version": "0.12.1"
+  },
+  "template": {
+    "url": "https://github.com/fips-agents/agent-template",
+    "type": "agent",
+    "commit": "eef631dd5586",
+    "full_commit": "eef631dd558661de56739539951926232d95d857",
+    "subdir": "templates/agent-loop"
+  },
+  "project": {
+    "name": "fbi-crime-analyst-agent",
+    "created_at": "2026-05-07T20:55:43.904065+00:00"
+  }
+}

@@ -5,6 +5,10 @@ metadata:
   name: {{ include "fbi-crime-analyst-agent.fullname" . }}
   labels:
     {{- include "fbi-crime-analyst-agent.labels" . | nindent 4 }}
+  {{- with .Values.route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   {{- if .Values.route.host }}
   host: {{ .Values.route.host }}

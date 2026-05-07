@@ -25,10 +25,13 @@ resources:
 # using the ${VAR:-default} pattern.  Only set values that differ from
 # the defaults baked into the image.
 config:
-  # MODEL_ENDPOINT: https://vllm.apps.cluster.example.com/v1
-  # MODEL_NAME: meta-llama/Llama-3.3-70B-Instruct
+  # The agent's defaults already point at the in-cluster gpt-oss-20b and
+  # FBI MCP services. Override here for cross-cluster or external endpoints.
+  # MODEL_ENDPOINT: http://gpt-oss-20b.gpt-oss-model.svc.cluster.local:80/v1
+  # MODEL_NAME: RedHatAI/gpt-oss-20b
+  # MCP_FBI_URL: http://fbi-crime-stats-mcp.fbi-mcp.svc.cluster.local:8080/mcp/
   # MAX_ITERATIONS: "50"
-  # LOG_LEVEL: WARNING
+  # LOG_LEVEL: INFO
 
 # Additional environment variables (name/value pairs).
 # Use this for variables not covered by the config section, or for
@@ -50,9 +53,12 @@ service:
   port: 8080
 
 route:
-  enabled: false
+  enabled: true
   host: ""
-  # TLS configuration for OpenShift Route.
+  # Default 30s timeout drops long agent loops with multiple MCP tool calls.
+  # Bump to 5 minutes — see /Users/wjackson/.claude memory: route timeouts.
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
