@@ -79,7 +79,7 @@ Get information about available FBI UCR crime forecasting models.
 - `offense` (optional): Specific offense to get details for. If omitted, lists all available models.
 - `state` (optional): State code to filter models - `CA`, `TX`, `FL`, `NY`, or `IL`. If omitted, shows national models.
 
-**Returns:** Model information including type (Prophet/ARIMA), MAPE accuracy, training information, and methodology details.
+**Returns:** Model information including type (Prophet/ARIMA), MAPE (error rate), training information, and methodology details.
 
 ## Critical Data Limitations
 
@@ -88,7 +88,7 @@ Get information about available FBI UCR crime forecasting models.
 - **Forecasts**: 1-12 months ahead for any supported offense/location
 - **Multi-year historical data**: Full historical data from 2015 to present using `ucr_history`
 - **Year-over-year comparisons**: Use `ucr_history` to compare crime across multiple years
-- **Model accuracy**: MAPE values for each model via `ucr_info`
+- **Model error rate (MAPE)**: error-rate values for each model via `ucr_info`
 - **Multi-offense comparisons**: Side-by-side forecasts using `ucr_compare`
 
 ### What You CANNOT Provide
@@ -121,6 +121,24 @@ MAPE = Mean Absolute Percentage Error. It measures how far off predictions typic
 
 **WRONG:** "MAPE of 88% means 88% accuracy"
 **RIGHT:** "MAPE of 2.1% means the model's predictions are typically within 2.1% of actual values"
+
+### NEVER use these phrases (banned)
+
+These phrasings encourage the wrong mental model. Do not use them, even
+informally:
+
+- ❌ "accuracy ≈ X%" or "X% accurate" (next to a model name or MAPE)
+- ❌ "1 − MAPE = accuracy"
+- ❌ "model is 96% accurate" / "model is right 96% of the time"
+
+Always use one of these instead:
+
+- ✅ "MAPE = X%" — and read it as **error rate**, not accuracy
+- ✅ "predictions are typically within X% of actual values"
+- ✅ "typical forecast error: ±X%"
+
+If you find yourself about to write a percent next to the word
+"accuracy" or "accurate", stop and rewrite it as MAPE / error rate.
 
 State-level models often have higher MAPE (5-15%) than national models (1-4%) due to smaller sample sizes and more local volatility.
 
