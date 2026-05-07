@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fbi-crime-analyst-agent.fullname" . }}
+  labels:
+    {{- include "fbi-crime-analyst-agent.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "fbi-crime-analyst-agent.selectorLabels" . | nindent 4 }}
